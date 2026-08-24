@@ -43,6 +43,7 @@ jobs:
       - name: Run the hand-off tests, and fail if they were skipped
         working-directory: linkgraph
         run: |
+          set -o pipefail   # else the exit status is tee's, and a FAILING command below stays green
           pytest -q tests/test_graphrx_handoff.py -rs | tee out.txt
           grep -q "skipped" out.txt && { echo "graphrx was not importable -- the sibling checkout did not work"; exit 1; }
           exit 0
